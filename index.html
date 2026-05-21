@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>William and Lucy's 50th Anniversary Wedding</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --grey-50: #f5f5f6;
+      --grey-100: #e4e4e7;
+      --grey-200: #c8c8cc;
+      --grey-400: #9a9a9e;
+      --grey-600: #5c5c62;
+      --grey-800: #2a2a2e;
+      --grey-900: #1a1a1f;
+      --purple: #9013fe;
+      --purple-dark: #6b0fc4;
+      --purple-light: #b87aff;
+      --purple-soft: #f0e4ff;
+      --purple-glow: rgba(144, 19, 254, 0.35);
+      --grey-glass: rgba(180, 180, 188, 0.2);
+      --grey-section: rgba(120, 120, 128, 0.88);
+      --purple-section: rgba(144, 19, 254, 0.12);
+      --bg: var(--grey-900);
+      --surface: var(--grey-50);
+      --surface-2: #ececef;
+      --ink: var(--grey-900);
+      --ink-muted: var(--grey-600);
+      --accent: var(--grey-400);
+      --accent-soft: var(--grey-200);
+      --radius: 1.25rem;
+      --radius-sm: 0.75rem;
+      --shadow: 0 4px 24px rgba(42, 42, 46, 0.08);
+      --shadow-lg: 0 20px 60px rgba(107, 15, 196, 0.12);
+      --font-display: "Cormorant Garamond", Georgia, serif;
+      --font-body: "DM Sans", system-ui, sans-serif;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--ink);
+      background: var(--surface);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Nav ── */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem clamp(1.25rem, 4vw, 2.5rem);
+      transition: background 0.4s var(--ease), backdrop-filter 0.4s var(--ease), box-shadow 0.4s var(--ease);
+    }
+
+    .nav.scrolled {
+      background: rgba(26, 26, 31, 0.82);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 1px 0 var(--purple-glow);
+    }
+
+    .nav-brand {
+      font-family: var(--font-display);
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--grey-200);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+
+    .nav-brand:hover { color: var(--purple-light); }
+
+    .nav-links {
+      display: flex;
+      gap: 0.25rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      padding: 0.5rem 1rem;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.75);
+      text-decoration: none;
+      border-radius: 999px;
+      transition: color 0.2s, background 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--purple-light);
+      background: var(--purple-glow);
+    }
+
+    .nav-toggle {
+      display: none;
+      width: 2.5rem;
+      height: 2.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.08);
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-toggle svg { width: 1.25rem; height: 1.25rem; color: #fff; }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 99;
+      background: linear-gradient(160deg, var(--grey-900) 0%, #2d1f42 100%);
+      backdrop-filter: blur(20px);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s var(--ease);
+    }
+
+    .mobile-menu.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .mobile-menu a {
+      font-family: var(--font-display);
+      font-size: 1.75rem;
+      color: #fff;
+      text-decoration: none;
+      padding: 0.75rem 1.5rem;
+      transition: color 0.2s;
+    }
+
+    .mobile-menu a:hover { color: var(--purple-light); }
+
+    .mobile-close {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      width: 2.5rem;
+      height: 2.5rem;
+      border: none;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      color: #fff;
+      font-size: 1.5rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      position: relative;
+      height: 100svh;
+      min-height: 560px;
+      overflow: hidden;
+      background: var(--bg);
+    }
+
+    .hero-slides { position: absolute; inset: 0; }
+
+    .hero-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 1.2s var(--ease);
+    }
+
+    .hero-slide.active { opacity: 1; }
+
+    .hero-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 20%;
+      transform: scale(1.06);
+      transition: transform 8s var(--ease);
+    }
+
+    .hero-slide.active img { transform: scale(1); }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(26, 26, 31, 0.4) 0%, transparent 35%),
+        linear-gradient(0deg, rgba(26, 26, 31, 0.9) 0%, rgba(107, 15, 196, 0.25) 45%, transparent 100%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: clamp(2rem, 6vw, 4rem);
+      padding-bottom: clamp(3rem, 8vw, 5rem);
+      z-index: 10;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      width: fit-content;
+      padding: 0.4rem 1rem;
+      margin-bottom: 1.25rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--grey-200);
+      background: var(--grey-glass);
+      border: 1px solid rgba(184, 184, 192, 0.35);
+      border-radius: 999px;
+      backdrop-filter: blur(8px);
+      animation: fadeUp 0.8s var(--ease) 0.1s both;
+    }
+
+    .hero-badge::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--purple-light);
+      box-shadow: 0 0 8px var(--purple-glow);
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 7vw, 4.25rem);
+      font-weight: 600;
+      line-height: 1.1;
+      color: #fff;
+      max-width: 14ch;
+      letter-spacing: -0.02em;
+      animation: fadeUp 0.8s var(--ease) 0.2s both;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem 2rem;
+      margin-top: 1.5rem;
+      animation: fadeUp 0.8s var(--ease) 0.35s both;
+    }
+
+    .hero-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      color: var(--grey-200);
+    }
+
+    .hero-meta-item svg {
+      width: 1.125rem;
+      height: 1.125rem;
+      stroke: var(--purple-light);
+      fill: none;
+      stroke-width: 1.75;
+    }
+
+    .hero-dots {
+      position: absolute;
+      bottom: 2rem;
+      right: clamp(1.25rem, 4vw, 2.5rem);
+      display: flex;
+      gap: 0.5rem;
+      z-index: 15;
+    }
+
+    .hero-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      border: none;
+      background: var(--grey-400);
+      cursor: pointer;
+      transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+    }
+
+    .hero-dot.active {
+      background: var(--purple-light);
+      box-shadow: 0 0 12px var(--purple-glow);
+      transform: scale(1.2);
+    }
+
+    .scroll-cue {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--grey-400);
+      font-size: 0.6875rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      z-index: 15;
+      animation: fadeUp 0.8s var(--ease) 0.5s both;
+    }
+
+    .scroll-cue-line {
+      width: 1px;
+      height: 2.5rem;
+      background: linear-gradient(to bottom, var(--purple-light), transparent);
+      animation: scrollLine 2s var(--ease) infinite;
+    }
+
+    @keyframes scrollLine {
+      0%, 100% { transform: scaleY(0); transform-origin: top; opacity: 0; }
+      50% { transform: scaleY(1); opacity: 1; }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Main content ── */
+    main {
+      position: relative;
+      z-index: 1;
+    }
+
+    .container {
+      width: min(720px, 100% - 2.5rem);
+      margin-inline: auto;
+    }
+
+    .section {
+      padding: clamp(4rem, 10vw, 6rem) 0;
+    }
+
+    .section-label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--purple);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-heading {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 2.75rem);
+      font-weight: 600;
+      line-height: 1.15;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Greeting */
+    .section-greeting {
+      background: linear-gradient(180deg, var(--grey-100) 0%, var(--surface) 100%);
+    }
+
+    .section-greeting .section-heading {
+      color: var(--grey-800);
+    }
+
+    .greeting-text {
+      margin-top: 1.5rem;
+      font-size: 1.0625rem;
+      line-height: 1.75;
+      color: var(--ink-muted);
+    }
+
+    .greeting-text p + p { margin-top: 1.25rem; }
+
+    .divider {
+      width: 3rem;
+      height: 2px;
+      background: linear-gradient(90deg, var(--grey-400), var(--purple));
+      margin: 2rem 0;
+    }
+
+    /* Details */
+    .section-details {
+      background: linear-gradient(135deg, var(--purple-section) 0%, var(--grey-100) 50%, var(--purple-soft) 100%);
+    }
+
+    .section-details .section-heading {
+      color: var(--grey-800);
+    }
+
+    .details-grid {
+      display: grid;
+      gap: 1rem;
+      margin-top: 2.5rem;
+    }
+
+    @media (min-width: 540px) {
+      .details-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .detail-card {
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(144, 19, 254, 0.12);
+      transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease), border-color 0.3s;
+    }
+
+    .detail-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: rgba(144, 19, 254, 0.28);
+    }
+
+    .detail-icon {
+      width: 2.5rem;
+      height: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--purple-soft), var(--grey-100));
+      border-radius: var(--radius-sm);
+      margin-bottom: 1rem;
+      font-size: 1.125rem;
+    }
+
+    .detail-card h3 {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--purple-dark);
+      margin-bottom: 0.35rem;
+    }
+
+    .detail-card p {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--grey-800);
+      line-height: 1.3;
+    }
+
+    /* Map */
+    .section-map {
+      background: var(--grey-50);
+      padding-bottom: 0;
+    }
+
+    .section-map .section-heading {
+      color: var(--grey-800);
+    }
+
+    .map-wrap {
+      margin-top: 2rem;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      border: 2px solid var(--grey-100);
+      outline: 1px solid rgba(144, 19, 254, 0.15);
+    }
+
+    .map-frame {
+      width: 100%;
+      height: clamp(280px, 40vw, 400px);
+      border: 0;
+      display: block;
+    }
+
+    .map-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      margin-top: 1.25rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--purple);
+      text-decoration: none;
+      transition: gap 0.2s;
+    }
+
+    .map-link:hover {
+      gap: 0.6rem;
+      color: var(--purple-dark);
+    }
+
+    /* Footer */
+    footer {
+      padding: 3rem 0 2.5rem;
+      text-align: center;
+      background: linear-gradient(180deg, var(--grey-800) 0%, #1f1529 100%);
+      color: var(--grey-400);
+    }
+
+    footer .anniversary-mark {
+      font-family: var(--font-display);
+      font-size: 3rem;
+      font-weight: 600;
+      background: linear-gradient(135deg, var(--grey-400), var(--purple-light));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1;
+      margin-bottom: 0.75rem;
+    }
+
+    footer p {
+      font-size: 0.8125rem;
+      letter-spacing: 0.05em;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-toggle { display: flex; }
+      .mobile-menu { display: flex; }
+      .hero-dots { bottom: 5rem; }
+      .scroll-cue { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav" id="nav">
+    <a href="#top" class="nav-brand">W &amp; L</a>
+    <ul class="nav-links">
+      <li><a href="#greeting">Invitation</a></li>
+      <li><a href="#details">Details</a></li>
+      <li><a href="#map">Location</a></li>
+    </ul>
+    <button class="nav-toggle" type="button" aria-label="Open menu" id="menu-open">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M4 7h16M4 12h16M4 17h16"/>
+      </svg>
+    </button>
+  </nav>
+
+  <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+    <button class="mobile-close" type="button" aria-label="Close menu" id="menu-close">&times;</button>
+    <a href="#greeting">Invitation</a>
+    <a href="#details">Details</a>
+    <a href="#map">Location</a>
+  </div>
+
+  <header class="hero" id="top">
+    <div class="hero-slides">
+      <div class="hero-slide active">
+        <img src="images/photo-1.jpeg" alt="William and Lucy">
+      </div>
+      <div class="hero-slide">
+        <img src="images/photo-2.jpeg" alt="William and Lucy">
+      </div>
+    </div>
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+      <span class="hero-badge">50th Anniversary</span>
+      <h1 class="hero-title">William and Lucy's 50th Anniversary Wedding</h1>
+      <div class="hero-meta">
+        <span class="hero-meta-item">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          19 December 2026
+        </span>
+        <span class="hero-meta-item">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          10:30 AM
+        </span>
+      </div>
+    </div>
+
+    <div class="hero-dots" role="tablist" aria-label="Photo slideshow">
+      <button class="hero-dot active" type="button" aria-label="Photo 1" data-slide="0"></button>
+      <button class="hero-dot" type="button" aria-label="Photo 2" data-slide="1"></button>
+    </div>
+
+    <div class="scroll-cue" aria-hidden="true">
+      <span>Scroll</span>
+      <span class="scroll-cue-line"></span>
+    </div>
+  </header>
+
+  <main>
+    <section class="section section-greeting" id="greeting">
+      <div class="container reveal">
+        <span class="section-label">Invitation</span>
+        <h2 class="section-heading">Dear friends and family,</h2>
+        <div class="divider"></div>
+        <div class="greeting-text">
+          <p>It's hard to believe that 50 years has flown by, and we're excited to announce that our wedding anniversary is just around the corner!</p>
+          <p>To celebrate this special occasion, we would like to invite you to join us for a celebration of love, laughter, and memories.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-details" id="details">
+      <div class="container reveal">
+        <span class="section-label">Save the date</span>
+        <h2 class="section-heading">Event details</h2>
+        <div class="details-grid">
+          <article class="detail-card">
+            <div class="detail-icon" aria-hidden="true">📅</div>
+            <h3>Date</h3>
+            <p>19th December 2026</p>
+          </article>
+          <article class="detail-card">
+            <div class="detail-icon" aria-hidden="true">⏰</div>
+            <h3>Time</h3>
+            <p>10:30 AM</p>
+          </article>
+          <article class="detail-card">
+            <div class="detail-icon" aria-hidden="true">📍</div>
+            <h3>Venue</h3>
+            <p>PCEA church Gitero Naromoru</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-map" id="map">
+      <div class="container reveal">
+        <span class="section-label">Find us</span>
+        <h2 class="section-heading">Location</h2>
+        <div class="map-wrap">
+          <iframe
+            class="map-frame"
+            title="PCEA church Gitero Naromoru"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDpBKZ2oyPeYEQhFvu9ZMKJY1_epLhNgdQ&amp;q=Gitero%20PCEA%20CHURCH%20nyeri%20Joy%20parish%20-%20HX75%2B566%2C%20Nyeri%2C%20Kenya">
+          </iframe>
+        </div>
+        <a
+          class="map-link"
+          href="https://www.google.com/maps/search/?api=1&amp;query=Gitero+PCEA+CHURCH+nyeri+Joy+parish"
+          target="_blank"
+          rel="noopener noreferrer">
+          Open in Google Maps →
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="anniversary-mark">50</div>
+    <p>William &amp; Lucy · December 2026</p>
+  </footer>
+
+  <script>
+    const slides = document.querySelectorAll('.hero-slide');
+    const dots = document.querySelectorAll('.hero-dot');
+    let slideIndex = 0;
+    let timer;
+
+    function goToSlide(i) {
+      slides[slideIndex].classList.remove('active');
+      dots[slideIndex].classList.remove('active');
+      slideIndex = i;
+      slides[slideIndex].classList.add('active');
+      dots[slideIndex].classList.add('active');
+    }
+
+    function nextSlide() {
+      goToSlide((slideIndex + 1) % slides.length);
+    }
+
+    function startSlideshow() {
+      clearInterval(timer);
+      timer = setInterval(nextSlide, 6000);
+    }
+
+    dots.forEach((dot) => {
+      dot.addEventListener('click', () => {
+        goToSlide(Number(dot.dataset.slide));
+        startSlideshow();
+      });
+    });
+
+    startSlideshow();
+
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    const mobileMenu = document.getElementById('mobile-menu');
+    const openMenu = () => {
+      mobileMenu.classList.add('open');
+      mobileMenu.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    };
+    const closeMenu = () => {
+      mobileMenu.classList.remove('open');
+      mobileMenu.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    };
+
+    document.getElementById('menu-open').addEventListener('click', openMenu);
+    document.getElementById('menu-close').addEventListener('click', closeMenu);
+    mobileMenu.querySelectorAll('a').forEach((a) => a.addEventListener('click', closeMenu));
+
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
+    );
+    reveals.forEach((el) => observer.observe(el));
+  </script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "name": "william-and-lucys-50th",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx --yes serve . -l 3000",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thelewisndegwa/william-and-lucys-50th.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thelewisndegwa/william-and-lucys-50th/issues"
+  },
+  "homepage": "https://github.com/thelewisndegwa/william-and-lucys-50th#readme"
+}
