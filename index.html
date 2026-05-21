@@ -123,7 +123,7 @@
       display: none;
       position: fixed;
       inset: 0;
-      z-index: 99;
+      z-index: 110;
       background: linear-gradient(160deg, var(--grey-900) 0%, #2d1f42 100%);
       backdrop-filter: blur(20px);
       flex-direction: column;
@@ -131,13 +131,19 @@
       justify-content: center;
       gap: 0.5rem;
       opacity: 0;
+      visibility: hidden;
       pointer-events: none;
-      transition: opacity 0.3s var(--ease);
+      transition: opacity 0.3s var(--ease), visibility 0.3s var(--ease);
     }
 
     .mobile-menu.open {
       opacity: 1;
+      visibility: visible;
       pointer-events: auto;
+    }
+
+    body.menu-open .nav {
+      z-index: 120;
     }
 
     .mobile-menu a {
@@ -155,6 +161,7 @@
       position: absolute;
       top: 1.25rem;
       right: 1.25rem;
+      z-index: 2;
       width: 2.5rem;
       height: 2.5rem;
       border: none;
@@ -165,6 +172,11 @@
       cursor: pointer;
       line-height: 1;
     }
+
+    .nav-toggle .icon-close { display: none; }
+
+    body.menu-open .nav-toggle .icon-menu { display: none; }
+    body.menu-open .nav-toggle .icon-close { display: block; }
 
     /* ── Hero ── */
     .hero {
@@ -559,9 +571,12 @@
       <li><a href="#details">Details</a></li>
       <li><a href="#map">Location</a></li>
     </ul>
-    <button class="nav-toggle" type="button" aria-label="Open menu" id="menu-open">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" id="menu-open">
+      <svg class="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
         <path d="M4 7h16M4 12h16M4 17h16"/>
+      </svg>
+      <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M6 6l12 12M18 6L6 18"/>
       </svg>
     </button>
   </nav>
@@ -714,20 +729,31 @@
     }, { passive: true });
 
     const mobileMenu = document.getElementById('mobile-menu');
-    const openMenu = () => {
-      mobileMenu.classList.add('open');
-      mobileMenu.setAttribute('aria-hidden', 'false');
-      document.body.style.overflow = 'hidden';
-    };
-    const closeMenu = () => {
-      mobileMenu.classList.remove('open');
-      mobileMenu.setAttribute('aria-hidden', 'true');
-      document.body.style.overflow = '';
+    const menuOpenBtn = document.getElementById('menu-open');
+    const menuCloseBtn = document.getElementById('menu-close');
+
+    const setMenuOpen = (open) => {
+      mobileMenu.classList.toggle('open', open);
+      document.body.classList.toggle('menu-open', open);
+      mobileMenu.setAttribute('aria-hidden', open ? 'false' : 'true');
+      menuOpenBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      menuOpenBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      document.body.style.overflow = open ? 'hidden' : '';
     };
 
-    document.getElementById('menu-open').addEventListener('click', openMenu);
-    document.getElementById('menu-close').addEventListener('click', closeMenu);
-    mobileMenu.querySelectorAll('a').forEach((a) => a.addEventListener('click', closeMenu));
+    const openMenu = () => setMenuOpen(true);
+    const closeMenu = () => setMenuOpen(false);
+
+    menuOpenBtn.addEventListener('click', () => {
+      setMenuOpen(!mobileMenu.classList.contains('open'));
+    });
+    menuCloseBtn.addEventListener('click', closeMenu);
+    mobileMenu.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', closeMenu);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && mobileMenu.classList.contains('open')) closeMenu();
+    });
 
     const reveals = document.querySelectorAll('.reveal');
     const observer = new IntersectionObserver(
